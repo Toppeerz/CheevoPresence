@@ -1,0 +1,9 @@
+{
+  "username": "",
+  "apikey": "",
+  "show_profile_button": true,
+  "show_gamepage_button": true,
+  "interval": 5,
+  "timeout": 130,
+  "start_on_boot": false
+}
