@@ -1,0 +1,4 @@
+-r base.txt
+pyobjc-core>=11,<12
+pyobjc-framework-Cocoa>=11,<12
+pyobjc-framework-Quartz>=11,<12

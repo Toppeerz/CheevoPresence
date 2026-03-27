@@ -1,0 +1,1 @@
+"""macOS desktop shell package."""
