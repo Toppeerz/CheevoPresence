@@ -10,10 +10,21 @@ python -m PyInstaller `
   --windowed `
   --name "CheevoPresence" `
   --icon "cheevoRP_icon.ico" `
+  --paths "$projectRoot" `
   --hidden-import "pystray._win32" `
+  --exclude-module "desktop.platform.macos" `
+  --exclude-module "desktop.shell.macos.entrypoint" `
+  --exclude-module "desktop.shell.macos.ipc" `
+  --exclude-module "desktop.shell.macos.menu_bar" `
+  --exclude-module "desktop.shell.macos.settings" `
+  --exclude-module "objc" `
+  --exclude-module "Foundation" `
+  --exclude-module "AppKit" `
+  --exclude-module "Quartz" `
+  --exclude-module "PyObjCTools" `
   --add-data "console_icons.ini;." `
   --add-data "cheevoRP_icon.ico;." `
   --add-data "cheevoRP_inactive.ico;." `
   --add-data "cheevoRP_active.ico;." `
   --add-data "cheevoRP_error.ico;." `
-  "ra_discord_rp.py"
+  "launch_windows.py"

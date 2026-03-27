@@ -1,5 +1,7 @@
 """Application controller for desktop runtime coordination."""
 
+from __future__ import annotations
+
 import os
 import shutil
 import sys
@@ -213,7 +215,7 @@ class AppController:
             return UpdateInstallResult(
                 success=False,
                 error_title="Update Unsupported",
-                error_message="Automatic updates are only available in the packaged app build on this platform.",
+                error_message="Automatic updates are only available in the packaged app build installed in a writable location.",
             )
 
         asset_name = status.asset_name
@@ -350,13 +352,4 @@ class AppController:
 
     def _cleanup_update_download(self, download_dir):
         """Remove a temporary update download directory when staging fails."""
-        try:
-            for entry in os.listdir(download_dir):
-                path = os.path.join(download_dir, entry)
-                try:
-                    os.remove(path)
-                except OSError:
-                    pass
-            os.rmdir(download_dir)
-        except OSError:
-            pass
+        shutil.rmtree(download_dir, ignore_errors=True)

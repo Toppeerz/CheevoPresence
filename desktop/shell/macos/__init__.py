@@ -1,1 +1,1 @@
-"""macOS desktop shell scaffold."""
+"""macOS desktop shell package."""

@@ -1,19 +1,39 @@
-"""macOS settings window scaffold.
+"""Companion settings client for the macOS native host."""
 
-This file will eventually host the native macOS settings UI for the shared runtime.
-"""
+from __future__ import annotations
 
-from desktop.runtime.controller import AppController
+import os
+import sys
+
+import tkinter as tk
+from tkinter import messagebox
+
+from desktop.shell.tk_settings import TkSettingsWindow
 
 
-class MacOSSettingsWindow:
-    """Placeholder for the future native macOS settings window."""
+def _show_startup_error(message):
+    """Display a small native error when the settings client cannot boot."""
+    try:
+        root = tk.Tk()
+        root.withdraw()
+        messagebox.showerror("CheevoPresence Settings", message)
+        root.destroy()
+    except Exception:
+        print(message, file=sys.stderr)
 
-    def __init__(self, controller: AppController, on_close=None, on_quit=None):
-        self.controller = controller
-        self.on_close = on_close
-        self.on_quit = on_quit
 
-    def show(self):
-        """Open the native macOS settings window when implemented."""
-        raise NotImplementedError("The macOS settings window has not been implemented yet.")
+def main(address=None, auth_token=None):
+    """Start the shared Tk settings window against the macOS host bridge."""
+    from .ipc import (
+        MACOS_SETTINGS_ADDRESS_ENV,
+        MACOS_SETTINGS_AUTH_ENV,
+        MacOSRemoteController,
+    )
+
+    address = address or os.environ.get(MACOS_SETTINGS_ADDRESS_ENV)
+    auth_token = auth_token or os.environ.get(MACOS_SETTINGS_AUTH_ENV)
+    try:
+        controller = MacOSRemoteController(address, auth_token)
+        TkSettingsWindow(controller, on_quit=controller.quit_app)
+    except Exception as exc:
+        _show_startup_error(str(exc) or "The settings client could not connect to the host app.")

@@ -1,6 +1,6 @@
 # <img src=".github/assets/tray-default.png" width="30"/> CheevoPresence
 
-CheevoPresence is a (for now only) Windows desktop app that mirrors your RetroAchievements activity to Discord Rich Presence.
+CheevoPresence is a desktop app for Windows and macOS that mirrors your RetroAchievements activity to Discord Rich Presence.
 
 It watches your current RetroAchievements session, detects whether you are actively playing, and updates Discord with your game, platform, achievement progress, and quick links to your RetroAchievements profile and game page.
 
@@ -8,11 +8,10 @@ It watches your current RetroAchievements session, detects whether you are activ
 
 ## What It Does
 
-- Shows your current RetroAchievements session as a live Discord Rich Presence
+- Shows your current RetroAchievements session as a live Discord Rich Presence with the actual game you are playing
 - Detects when you are no longer actively playing and clears the Discord presence
 - Supports profile and game-page buttons in Discord
-- Runs quietly in the Windows system tray
-- Lets you launch the app automatically with Windows Startup
+- Runs quietly in the background
 
 This app was made with the intent to be as easy and lightweight as possible. You start the app, put in your RetroAchievements Username and your Web API Key and it works. Close the Window and youre gucci.
 
@@ -31,7 +30,7 @@ To use CheevoPresence, you need:
 
 ### First-Time Setup
 
-1. Launch `CheevoPresence.exe`
+1. Launch `CheevoPresence.exe` on Windows or `CheevoPresence.app` on macOS
 2. Enter your RetroAchievement username
 3. Enter your Web API key
 4. Choose your preferred behavior settings
@@ -43,8 +42,9 @@ If everything is set up correctly, CheevoPresence will begin updating your Disco
 > Make sure to close the Settings Window normally, pressing the "Exit App" Button will end the process entirely.
 
 
-### Tray Icon Meanings
+### Tray/Menu-Bar Status
 
+#### Windows
 CheevoPresence uses different tray icons to show its current state:
 
 | Icon | Tray icon state | Meaning |
@@ -54,79 +54,34 @@ CheevoPresence uses different tray icons to show its current state:
 | <img src="./.github/assets/tray-inactive.png" alt="Gray tray icon" width="20" /> | Gray icon | Idle, stopped, not playing, or not currently active |
 | <img src="./.github/assets/tray-error.png" alt="Red tray icon" width="20" /> | Red icon | Something needs attention, such as Discord not being open, a network issue, or an API/config problem |
 
+#### macOS
+CheevoPresence uses a monochrome menu-bar icon that stays template-styled to match the system UI.
+
+| Preview | Menu-bar state | Meaning |
+| --- | --- | --- |
+| <img src="./.github/assets/macOS_active.png" alt="macOS active menu-bar state" width="42" /> | Active | Connected and actively updating Discord |
+| <img src="./.github/assets/macOS_inactive.png" alt="macOS inactive menu-bar state" width="42" /> | Inactive | Idle, stopped, not playing, or not currently active |
+| <img src="./.github/assets/macOS_error.png" alt="macOS error menu-bar state" width="42" /> | Error | Something needs attention, such as Discord not being open, a network issue, or an API/config problem |
+
 ## Configuration and Privacy
 
 CheevoPresence does not expect you to keep secrets inside the repository.
 
 - The repository-level `config.json` is ignored by Git
-- Runtime configuration is stored under `%APPDATA%\CheevoPresence\config.json`
-- The API key is stored in a protected form on Windows rather than being written back as plain text in the repo
+- Runtime configuration is stored under `%APPDATA%\CheevoPresence\config.json` on Windows
+- Runtime configuration is stored under `~/Library/Application Support/CheevoPresence/config.json` on macOS
+- The API key is stored in a protected form on Windows and in the macOS Keychain on macOS rather than being written back as plain text in the repo
 - `config.example.json` exists only as a clean template
 
 
 
 ## Building the App Yourself
 
-If you want to modify, test, or package CheevoPresence yourself, you can build the executable locally.
+If you want to modify or package CheevoPresence yourself, use the platform-specific build guides:
 
-### Build Prerequisites
+- Windows: [`.github/buildWindows.md`](./.github/buildWindows.md)
+- macOS: [`.github/buildMacOS.md`](./.github/buildMacOS.md)
 
-- Windows
-- Python
-- The packages from `requirements.txt`
-- PyInstaller
-
-Install PyInstaller separately:
-
-```powershell
-pip install pyinstaller
-```
-
-### Build With the Included Script
-
-The project already includes a PowerShell build script:
-
-```powershell
-.\build_exe.ps1
-```
-
-This builds a one-file, windowed executable named:
-
-```text
-dist\CheevoPresence.exe
-```
-
-### What the Build Script Includes
-
-The bundled build currently packages:
-
-- `ra_discord_rp.py`
-- `console_icons.ini`
-- `cheevoRP_icon.ico`
-- `cheevoRP_inactive.ico`
-- `cheevoRP_active.ico`
-- `cheevoRP_error.ico`
-
-### Manual PyInstaller Command
-
-If you prefer to build manually instead of using the script, this is the equivalent command:
-
-```powershell
-python -m PyInstaller `
-  --noconfirm `
-  --clean `
-  --onefile `
-  --windowed `
-  --name "CheevoPresence" `
-  --icon "cheevoRP_icon.ico" `
-  --hidden-import "pystray._win32" `
-  --add-data "console_icons.ini;." `
-  --add-data "cheevoRP_icon.ico;." `
-  --add-data "cheevoRP_inactive.ico;." `
-  --add-data "cheevoRP_active.ico;." `
-  --add-data "cheevoRP_error.ico;." `
-  "ra_discord_rp.py"
-```
 
 ## Support the Project
 
