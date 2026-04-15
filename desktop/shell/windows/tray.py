@@ -48,6 +48,7 @@ class TrayApp:
         self.current_status = "disconnected"
         self.status_text = "Not running"
         self._settings_open = False
+        self._exit_listener = None
         self._fallback_colors = {
             "connected": (0, 200, 0, 255),
             "connecting": (255, 165, 0, 255),
@@ -193,6 +194,7 @@ class TrayApp:
         ico = load_icon_image(APP_ICON_FILE) or create_tray_icon((150, 150, 150, 255))
 
         self.icon = icon_class(APP_NAME, ico, APP_NAME, menu)
+        self._exit_listener = self.platform.start_exit_listener(self.quit_app)
         self._update_icon()
 
         self.controller.start_saved_session()

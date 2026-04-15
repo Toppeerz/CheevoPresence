@@ -115,6 +115,7 @@ class MacOSMenuBarApp:
         self.settings_service = MacOSAppService(controller, on_quit=self.quit_app)
         self._settings_process = None
         self._delegate = None
+        self._exit_listener = None
         self._shutdown_started = False
         self._shutdown_lock = threading.Lock()
 
@@ -122,6 +123,7 @@ class MacOSMenuBarApp:
         """Build the status item and start the shared runtime controller."""
         self.settings_service.start()
         self._build_status_item()
+        self._exit_listener = self.controller.platform.start_exit_listener(self.quit_app)
         self._update_menu_status()
         self.controller.start_saved_session()
         if self.open_settings_on_launch:
